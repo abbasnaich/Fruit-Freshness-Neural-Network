@@ -1,109 +1,239 @@
 <div align="center">
-🍑 Fruit Freshness Neural Network
-A NumPy-based feedforward neural network for peach and strawberry freshness classification
+
+# 🍑 Fruit Freshness Neural Network 🍓
+
+**Feedforward Neural Network with Image Feature Extraction**
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python&logoColor=white)
-![NumPy](https://img.shields.io/badge/NumPy-Neural%20Network-013243?logo=numpy&logoColor=white)
-![Pillow](https://img.shields.io/badge/Pillow-Image%20Processing-yellow)
+![NumPy](https://img.shields.io/badge/NumPy-from%20scratch-013243?logo=numpy&logoColor=white)
+![Pillow](https://img.shields.io/badge/Pillow-image%20processing-orange)
+![No DL Frameworks](https://img.shields.io/badge/TensorFlow%20%2F%20PyTorch%20%2F%20Keras-not%20used-red)
+
 </div>
+
+> 🎓 **Course:** Artificial Neural Network and Deep Learning
+> 🧠 Feedforward Neural Network with Image Feature Extraction
+
 ---
-📚 Table of Contents
-Overview
-Dataset
-Model Architecture
-Image Feature Extraction
-Activation and Transfer Functions
-Training Pipeline
-Getting Started
-Understanding the Output
-Dependencies
+
+## 📚 Table of Contents
+
+1. [🎯 Project Overview](#-1-project-overview)
+2. [🗂️ Dataset](#️-2-dataset)
+3. [🧠 Architecture](#-3-architecture)
+4. [🖼️ Image Feature Extraction](#️-4-image-feature-extraction)
+5. [⚙️ Activation and Transfer Functions](#️-5-activation-and-transfer-functions)
+6. [🏋️ Training Pipeline](#️-6-training-pipeline)
+7. [🚀 How to Run](#-7-how-to-run)
+8. [📋 Output Explained](#-8-output-explained)
+9. [📦 Dependencies](#-9-dependencies)
+
 ---
-🎯 Overview
-This project builds a feedforward neural network from scratch using NumPy to classify the combined freshness of peaches and strawberries.
-Extracts 9 numerical features from each fruit image.
-Combines peach and strawberry features into an 18-value input vector.
-Predicts `1` only when both fruits are fresh; otherwise, predicts `0`.
-> The model uses handcrafted image features rather than raw pixels and does not rely on TensorFlow, PyTorch, or Keras.
-🗂️ Dataset
-Folder Structure
+
+## 🎯 1. Project Overview
+
+This program implements a **feedforward neural network from scratch (using only NumPy)** to classify the freshness of two fruits, **Peaches** and **Strawberries**, using image processing.
+
+### 💡 Key Ideas
+
+- 🖼️ Images cannot be fed directly into a neural network as raw pixel data.
+- 🔢 We extract compact **9-dimensional numerical feature vectors** per image.
+- 🍑🍓 Two images (one peach, one strawberry) are passed together and their features are concatenated into a single **18-dimensional input vector**.
+- ✅ The network predicts whether **BOTH** fruits are fresh simultaneously.
+
+---
+
+## 🗂️ 2. Dataset
+
+### 📁 Dataset Structure
+
 ```text
 Fruits Dataset/
-├── fresh\_peaches\_done/        # 250 images
-├── rotten\_peaches\_done/       # 343 images
-├── fresh\_strawberries\_done/   # 250 images
-└── rotten\_strawberries\_done/  # 251 images
+├── fresh_peaches_done/        250 fresh peach images
+├── rotten_peaches_done/       343 rotten peach images
+├── fresh_strawberries_done/   250 fresh strawberry images
+└── rotten_strawberries_done/  251 rotten strawberry images
 ```
-Dataset Summary
-Fruit	Fresh	Rotten	Total
-Peach	250	343	593
-Strawberry	250	251	501
-Combined samples: 501 peach–strawberry pairs. A sample is labeled `1` only when both fruits are fresh (AND logic).
-🧠 Model Architecture
+
+### 📊 Dataset Summary
+
+| Fruit | 🟢 Fresh | 🟤 Rotten | Total |
+|:------|:-------:|:--------:|:-----:|
+| 🍑 Peach | 250 | 343 | 593 |
+| 🍓 Strawberry | 250 | 251 | 501 |
+
+> 🔗 **Combined dataset:** We pair one peach image with one strawberry image per sample (**501 total pairs**). Label = `1` only when **BOTH** fruits are fresh (AND logic).
+
+---
+
+## 🧠 3. Architecture
+
+### 🔗 Network Structure
+
 ```text
-Input (18) → Dense (16, ReLU) → Dense (8, ReLU)
-           → Dense (4, ReLU) → Output (1, Sigmoid)
+Input (18) → Hidden1 (16, ReLU) → Hidden2 (8, ReLU) → Hidden3 (4, ReLU) → Output (1, Sigmoid)
 ```
-Layer	Neurons	Activation
-Input	18	—
-Hidden 1	16	ReLU
-Hidden 2	8	ReLU
-Hidden 3	4	ReLU
-Output	1	Sigmoid
-All adjacent layers are fully connected. Weights use He (Kaiming) initialization, suitable for ReLU layers.
-🖼️ Image Feature Extraction
-Each image is resized to 64 × 64 pixels and represented by 9 features.
-Feature	Description
-Mean Red, Green, Blue	Average value of each color channel
-Std Red, Green, Blue	Variation in each color channel
-Brightness	Mean grayscale intensity
-Contrast	Standard deviation of grayscale intensity
-Red-to-Green Ratio	Color ratio used as a ripeness-related indicator
-Input construction: 9 peach features + 9 strawberry features = 18 features.
-⚙️ Activation and Transfer Functions
-Function	Purpose
-ReLU — `max(0, z)`	Hidden-layer activation during training
-Sigmoid — `1 / (1 + e⁻ᶻ)`	Converts the output logit into a probability between 0 and 1
-Hard Limit / Heaviside	Converts a value into a binary decision using a threshold
-Tanh	Maps values to the range −1 to 1 for comparison
-The hard-limit function is useful for final binary decisions but is not differentiable, so it is not used for gradient-based training.
-🏋️ Training Pipeline
-Load images from the dataset folders.
-Resize each image and extract its 9 features.
-Pair peach and strawberry features; assign labels using AND logic.
-Normalize features to the range `\[0, 1]`.
-Split the data into 80% training and 20% testing.
-Run forward propagation through the network.
-Calculate Binary Cross-Entropy loss.
-Backpropagate gradients and update weights using gradient descent.
-Train for 200 epochs with a learning rate of `0.01`.
-Evaluate the test set and compare transfer-function outputs.
-Loss: Binary Cross-Entropy  
-Optimizer: Vanilla Gradient Descent  
-Learning rate: `0.01` · Epochs: `200`
-🚀 Getting Started
-1. Install dependencies
+
+### 🧱 Layer Details
+
+| Layer | Neurons | Activation |
+|:------|:-------:|:----------:|
+| Input | 18 | — |
+| Hidden 1 | 16 | ReLU |
+| Hidden 2 | 8 | ReLU |
+| Hidden 3 | 4 | ReLU |
+| Output | 1 | Sigmoid |
+
+Every neuron in each layer is fully connected to every neuron in the next layer.
+
+### ⚖️ Weight Initialisation
+
+**Weight Initialisation:** He (Kaiming) initialisation `W ~ N(0, sqrt(2/fan_in))`
+
+This is the optimal starting point for ReLU networks, preventing vanishing/exploding gradients.
+
+---
+
+## 🖼️ 4. Image Feature Extraction
+
+Each image is resized to **64x64 pixels**, then a **9-element feature vector** is extracted:
+
+| Index | Feature | Description |
+|:-----:|:--------|:------------|
+| 0 | 🔴 Mean Red | Average red channel value |
+| 1 | 🟢 Mean Green | Average green channel value |
+| 2 | 🔵 Mean Blue | Average blue channel value |
+| 3 | 📈 Std Red | Spread of red channel (texture proxy) |
+| 4 | 📈 Std Green | Spread of green channel |
+| 5 | 📈 Std Blue | Spread of blue channel |
+| 6 | 💡 Brightness | Overall luminance (mean greyscale) |
+| 7 | 🔆 Contrast | Std of greyscale (sharpness indicator) |
+| 8 | 🍎 Red-to-Green Ratio | Ripeness indicator (ripe fruits are redder) |
+
+**Two fruits combined:** `[9 peach features] ++ [9 strawberry features] = 18-dim input`
+
+---
+
+## ⚙️ 5. Activation and Transfer Functions
+
+### 🔹 ReLU (Hidden Layers)
+
+```text
+ReLU(z) = max(0, z)
+```
+
+- Used in all three hidden layers during forward pass and back-propagation.
+- Prevents vanishing gradients; derivative is 0 or 1 (very efficient).
+
+### 🔹 Sigmoid (Output Layer — Training)
+
+```text
+sigmoid(z) = 1 / (1 + e^(-z))
+```
+
+- Output in (0, 1) interpreted as freshness probability.
+- Used as primary output during training and evaluation.
+
+### 🔹 Hard-Limit / Heaviside Step (Transfer Function 1)
+
+```text
+H(z) = 1 if z >= threshold, else 0
+```
+
+- Crisp binary output: fresh or not fresh.
+- Cannot be used in training (not differentiable) but ideal for final decisions.
+
+### 🔹 Sigmoid (Transfer Function 2)
+
+Same sigmoid formula applied to raw logits for comparison display.
+
+### 🔹 Tanh (Transfer Function 3)
+
+```text
+tanh(z) = (e^z - e^(-z)) / (e^z + e^(-z))
+```
+
+- Output in (-1, 1). Symmetric and zero-centred.
+- `+1` = fresh, `-1` = rotten. Stronger gradients near 0 than sigmoid.
+
+---
+
+## 🏋️ 6. Training Pipeline
+
+| Step | Description |
+|:----:|:------------|
+| 1️⃣ | Load all images from disk. |
+| 2️⃣ | Resize to 64x64, extract 9 features per image. |
+| 3️⃣ | Pair peach + strawberry features → 18-dim input; label = AND of labels. |
+| 4️⃣ | Min-Max normalise all features to [0, 1]. |
+| 5️⃣ | 80/20 train-test split. |
+| 6️⃣ | Forward pass: X → ReLU → ReLU → ReLU → Sigmoid → y_hat. |
+| 7️⃣ | Compute Binary Cross-Entropy loss. |
+| 8️⃣ | Backward pass: compute gradients via chain rule. |
+| 9️⃣ | Update weights: `W = W - lr * gradient` (lr = 0.01). |
+| 🔟 | Repeat steps 6-9 for 200 epochs. |
+| 1️⃣1️⃣ | Evaluate on test set, demonstrate transfer functions. |
+
+### 📉 Loss Function: Binary Cross-Entropy
+
+```text
+L = -mean(y * log(y_hat) + (1-y) * log(1-y_hat))
+```
+
+Penalises confident wrong predictions heavily.
+
+### 📈 Optimiser: Vanilla Gradient Descent (lr = 0.01)
+
+The foundational algorithm; basis for all advanced optimisers.
+
+---
+
+## 🚀 7. How to Run
+
+### 📦 Prerequisites (install once)
+
 ```bash
 pip install numpy pillow
 ```
-2. Check your project structure
-Ensure `main.py` and the `Fruits Dataset` folder are in the same directory.
-3. Run the program
+
+### ▶️ Run the Program
+
 ```bash
 python main.py
 ```
-📋 Understanding the Output
-The program reports:
-Image processing: folders scanned and features extracted.
-Model setup: network layers and configuration.
-Training progress: loss printed every 20 epochs.
-Evaluation: test loss and accuracy.
-Transfer-function comparison: Hard Limit, Sigmoid, and Tanh outputs.
-Sample predictions: outputs and true labels for the first 10 test samples.
-📦 Dependencies
-Package	Purpose
-`numpy`	Matrix operations, neural-network calculations, and training
-`Pillow` (`PIL`)	Loading and resizing images
+
+> ⚠️ Make sure the `Fruits Dataset` folder is in the same directory as `main.py`.
+
 ---
-<div align="center">
-Built for learning the fundamentals of neural networks and image-based classification.
-</div>
+
+## 📋 8. Output Explained
+
+1. **📂 Loading Images & Extracting Features**
+   Scans all peach/strawberry folders, extracts 9-feature vectors.
+
+2. **🧠 Network Architecture**
+   Prints the layer sizes (18 → 16 → 8 → 4 → 1) and settings.
+
+3. **🏋️ Training (200 Epochs)**
+   Prints loss every 20 epochs. Loss should decrease, showing the network learns.
+
+4. **🧪 Evaluation on Test Set**
+   Test loss and accuracy on the 20% held-out data.
+
+5. **🔄 Transfer & Activation Function Demonstrations**
+   Applies Hard-Limit, Sigmoid, and Tanh to raw output logits (Z4) side-by-side.
+
+6. **🔍 Sample Predictions (First 10 Test Samples)**
+   Table showing Sigmoid output, Hard-Limit decision, Tanh value, and true label for 10 test samples.
+
+---
+
+## 📦 9. Dependencies
+
+| Package | Purpose | Install Command |
+|:--------|:--------|:----------------|
+| `numpy` | All matrix math / NN ops | `pip install numpy` |
+| `Pillow` | Image loading and resizing | `pip install pillow` |
+
+> 🚫 **No TensorFlow, PyTorch, or Keras used.**
+> The entire neural network is implemented from mathematical first principles.
