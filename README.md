@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🍑 Fruit Freshness Neural Network 🍓
+#  Fruit Freshness Neural Network 
 
 **Feedforward Neural Network with Image Feature Extraction**
 
@@ -30,11 +30,11 @@
 
 ---
 
-## 🎯 1. Project Overview
+##  1. Project Overview
 
 This program implements a **feedforward neural network from scratch (using only NumPy)** to classify the freshness of two fruits, **Peaches** and **Strawberries**, using image processing.
 
-### 💡 Key Ideas
+###  Key Ideas
 
 - 🖼️ Images cannot be fed directly into a neural network as raw pixel data.
 - 🔢 We extract compact **9-dimensional numerical feature vectors** per image.
@@ -55,7 +55,7 @@ Fruits Dataset/
 └── rotten_strawberries_done/  251 rotten strawberry images
 ```
 
-### 📊 Dataset Summary
+###  Dataset Summary
 
 | Fruit | 🟢 Fresh | 🟤 Rotten | Total |
 |:------|:-------:|:--------:|:-----:|
@@ -66,7 +66,7 @@ Fruits Dataset/
 
 ---
 
-## 🧠 3. Architecture
+##  3. Architecture
 
 ### 🔗 Network Structure
 
@@ -74,7 +74,7 @@ Fruits Dataset/
 Input (18) → Hidden1 (16, ReLU) → Hidden2 (8, ReLU) → Hidden3 (4, ReLU) → Output (1, Sigmoid)
 ```
 
-### 🧱 Layer Details
+###  Layer Details
 
 | Layer | Neurons | Activation |
 |:------|:-------:|:----------:|
@@ -86,7 +86,7 @@ Input (18) → Hidden1 (16, ReLU) → Hidden2 (8, ReLU) → Hidden3 (4, ReLU) �
 
 Every neuron in each layer is fully connected to every neuron in the next layer.
 
-### ⚖️ Weight Initialisation
+###  Weight Initialisation
 
 **Weight Initialisation:** He (Kaiming) initialisation `W ~ N(0, sqrt(2/fan_in))`
 
@@ -94,7 +94,7 @@ This is the optimal starting point for ReLU networks, preventing vanishing/explo
 
 ---
 
-## 🖼️ 4. Image Feature Extraction
+##  4. Image Feature Extraction
 
 Each image is resized to **64x64 pixels**, then a **9-element feature vector** is extracted:
 
@@ -114,7 +114,7 @@ Each image is resized to **64x64 pixels**, then a **9-element feature vector** i
 
 ---
 
-## ⚙️ 5. Activation and Transfer Functions
+##  5. Activation and Transfer Functions
 
 ### 🔹 ReLU (Hidden Layers)
 
@@ -158,7 +158,7 @@ tanh(z) = (e^z - e^(-z)) / (e^z + e^(-z))
 
 ---
 
-## 🏋️ 6. Training Pipeline
+##  6. Training Pipeline
 
 | Step | Description |
 |:----:|:------------|
@@ -188,7 +188,7 @@ The foundational algorithm; basis for all advanced optimisers.
 
 ---
 
-## 🚀 7. How to Run
+##  7. How to Run
 
 ### 📦 Prerequisites (install once)
 
@@ -206,7 +206,7 @@ python main.py
 
 ---
 
-## 📋 8. Output Explained
+##  8. Output Explained
 
 1. **📂 Loading Images & Extracting Features**
    Scans all peach/strawberry folders, extracts 9-feature vectors.
@@ -228,7 +228,7 @@ python main.py
 
 ---
 
-## 📦 9. Dependencies
+##  9. Dependencies
 
 | Package | Purpose | Install Command |
 |:--------|:--------|:----------------|
